@@ -18,6 +18,12 @@ def find_duplicates(line):
     duplicates = [letter for letter in line[0] if letter in line[1]]
     return set(duplicates)
 
+def splitintogroups(lines):
+    groups = []
+    for i in range(0, len(lines), 3):
+        groups.append(lines[i:(i+3)])
+    return groups
+
 if __name__ == "__main__":
     lines = readandstrip('Day3\input.txt')
     prioritysum = 0
@@ -27,3 +33,4 @@ if __name__ == "__main__":
         duplicates = find_duplicates(splitline)
         for duplicate in duplicates:
             prioritysum += priorities[duplicate]
+    groups = splitintogroups(lines)
