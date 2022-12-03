@@ -24,6 +24,10 @@ def splitintogroups(lines):
         groups.append(lines[i:(i+3)])
     return groups
 
+def find_badge(group):
+    duplicates = [letter for letter in group[0] if letter in group[1] and letter in group[2]]
+    return set(duplicates)
+
 if __name__ == "__main__":
     lines = readandstrip('Day3\input.txt')
     prioritysum = 0
@@ -34,3 +38,5 @@ if __name__ == "__main__":
         for duplicate in duplicates:
             prioritysum += priorities[duplicate]
     groups = splitintogroups(lines)
+    for group in groups:
+        badge = find_badge(group)
