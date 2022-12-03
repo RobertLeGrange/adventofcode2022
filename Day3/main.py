@@ -18,13 +18,12 @@ def find_duplicates(line):
     duplicates = [letter for letter in line[0] if letter in line[1]]
     return set(duplicates)
 
-
 if __name__ == "__main__":
     lines = readandstrip('Day3\input.txt')
+    prioritysum = 0
+    priorities = {key:value for (value, key) in enumerate(ascii_lowercase + ascii_uppercase, 1)}
     for line in lines:
         splitline = splitintwo(line)
         duplicates = find_duplicates(splitline)
-
-alphabet = ascii_lowercase + ascii_uppercase
-priorities = {key:value for (value, key) in enumerate(alphabet, 1)}
-print(priorities)
+        for duplicate in duplicates:
+            prioritysum += priorities[duplicate]
