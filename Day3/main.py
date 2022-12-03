@@ -8,11 +8,8 @@ def readandstrip(filename):
 
 def splitintwo(line):
     length = len(line)
-    if length % 2 == 0:
-        splitline = [line[:length//2], line[length//2:]]
-        return splitline
-    else:
-        print("Odd number of characters on line " + line)
+    splitline = [line[:length//2], line[length//2:]]
+    return splitline
 
 def find_duplicates(line):
     duplicates = [letter for letter in line[0] if letter in line[1]]
