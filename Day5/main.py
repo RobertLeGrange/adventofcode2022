@@ -31,11 +31,8 @@ def CrateMover9001(stacks, commandlines):
     return stacks
 
 def topstackprinter(stacks):
-    topstack = ''
-    for stack in stacks:
-        topstack += stack[-1]
+    topstack = "".join(stack[-1] for stack in stacks if stack)
     print("The top crate of each stack spells " + topstack)
-
 
 if __name__ == "__main__":
     data = open("Day5\input.txt").read().rstrip()
@@ -43,5 +40,5 @@ if __name__ == "__main__":
     stacklines, positionlines, commandlines = lines[:8], lines[8], lines[10:]
     positions = [positionlines.index(str) for str in positionlines if str.isdigit()]
     stacks = stackloader(stacklines, positions)
-    stacks = CrateMover9000(stacks, commandlines)
+    stacks = CrateMover9001(stacks, commandlines)
     topstackprinter(stacks)
