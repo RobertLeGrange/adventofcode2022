@@ -1,32 +1,47 @@
 import re
 
-data = open("Day5\input.txt").read().rstrip()
-lines = data.split("\n")
-
-stacklines, positionlines, commandlines = lines[:8], lines[8], lines[10:]
-
-positions = [positionlines.index(str) for str in positionlines if str.isdigit()]
-
-stacks = []
-stack = []
-for position in positions:
-    for line in reversed(stacklines):
-        for str in line[position]:
-            if str.isalpha():
-                stack.append(str)
-    stacks.append(stack)
+def stackloader(stacklines, positions):
+    stacks = []
     stack = []
+    for position in positions:
+        for line in reversed(stacklines):
+            for str in line[position]:
+                if str.isalpha():
+                    stack.append(str)
+        stacks.append(stack)
+        stack = []
+    return stacks
 
-pattern = re.compile("move | from | to ")
+def CrateMover9000(stacks, commandlines):
+    pattern = re.compile("move | from | to ")
+    for line in commandlines:
+        numcrate, fromcrate, tocrate = list(map(int, re.split(pattern, line)[1:]))
+        for i in range(numcrate):
+            tempcrate = stacks[fromcrate - 1].pop()
+            stacks[tocrate - 1].append(tempcrate)
+    return stacks
 
-#CrateMover 9000
-for line in commandlines:
-    numcrate, fromcrate, tocrate = list(map(int, re.split(pattern, line)[1:]))
-    for i in range(numcrate):
-        tempcrate = stacks[fromcrate - 1].pop()
-        stacks[tocrate - 1].append(tempcrate)
+def CrateMover9001(stacks, commandlines):
+    pattern = re.compile("move | from | to ")
+    for line in commandlines:
+        numcrate, fromcrate, tocrate = list(map(int, re.split(pattern, line)[1:]))
+        tempcrate = stacks[fromcrate - 1][-1*numcrate:]
+        del stacks[fromcrate - 1][-1*numcrate:]
+        stacks[tocrate - 1].extend(tempcrate)
+    return stacks
 
-topstack = ''
-for stack in stacks:
-    topstack += stack[-1]
-print(topstack)
+def topstackprinter(stacks):
+    topstack = ''
+    for stack in stacks:
+        topstack += stack[-1]
+    print("The top crate of each stack spells " + topstack)
+
+
+if __name__ == "__main__":
+    data = open("Day5\input.txt").read().rstrip()
+    lines = data.split("\n")
+    stacklines, positionlines, commandlines = lines[:8], lines[8], lines[10:]
+    positions = [positionlines.index(str) for str in positionlines if str.isdigit()]
+    stacks = stackloader(stacklines, positions)
+    stacks = CrateMover9000(stacks, commandlines)
+    topstackprinter(stacks)
