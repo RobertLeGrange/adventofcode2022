@@ -1,31 +1,27 @@
 with open("Day8\input.txt") as file:
     rows = file.read().strip().split("\n")
+    cols = [''.join(s) for s in zip(*rows)]
 
-def rowcheck(row, tree, treeposx):
-    visible = False
-    for checkposx, checktree in enumerate(row):
-        if checkposx == treeposx:
-            pass
-        else:
-            if tree > checktree:
-                visible = True
-                return visible
+def vischeck(checktrees, tree):
+    visible = True
+    for checktree in checktrees:
+        checktree = int(checktree)
+        if tree <= checktree:
+            visible = False
 
-def colcheck(rows, tree, treeposx, treeposy):
-    visible = False
-    for checkposy, row in enumerate(rows):
-        for checkposy, checktree in enumerate(row[treeposx]):
-            if checkposy == treeposy:
-                pass
-            else:
-                if tree > checktree:
-                    visible = True
-                    return visible
+    return visible
 
-    
-    
+visibletrees = 0
+for treeposy, row in enumerate(rows[1:-1]):
+    treeposy += 1
+    for treeposx, tree in enumerate(row[1:-1]):
+        treeposx += 1
+        visibleleft = vischeck(rows[treeposy][:treeposx], int(tree))
+        visibleright = vischeck(rows[treeposy][treeposx+1:], int(tree))
+        visibletop = vischeck(cols[treeposx][:treeposy], int(tree))
+        visiblebottom = vischeck(cols[treeposx][treeposy+1:], int(tree))
+        if visibleleft or visibleright or visibletop or visiblebottom:
+            visibletrees = visibletrees + 1
 
-for treeposx, row in enumerate(rows[1:-1]):
-    for treeposy, tree in enumerate(row[1:-1]):
-        visiblex = rowcheck(rows[treeposy+1], tree, treeposx+1)
-        visibley = colcheck(rows, tree, treeposx+1, treeposy+1)
+visibletrees = visibletrees + len(rows[0])*2 + len(rows)*2 - 4
+print(visibletrees)
