@@ -25,3 +25,24 @@ for treeposy, row in enumerate(rows[1:-1]):
 
 visibletrees = visibletrees + len(rows[0])*2 + len(rows)*2 - 4
 print(visibletrees)
+
+def viewscore(checktrees, tree):
+    score = 0
+    for checktree in checktrees:
+        checktree = int(checktree)
+        score += 1
+        if tree <= checktree:
+            break
+    return score
+
+scoretotal = 0
+for treeposy, row in enumerate(rows):
+    for treeposx, tree in enumerate(row):
+        scoreleft = viewscore(rows[treeposy][:treeposx][::-1], int(tree))
+        scoreright = viewscore(rows[treeposy][treeposx+1:], int(tree))
+        scoretop = viewscore(cols[treeposx][:treeposy][::-1], int(tree))
+        scorebottom = viewscore(cols[treeposx][treeposy+1:], int(tree))
+        if scoretotal < (scoreleft * scoreright * scoretop * scorebottom):
+            scoretotal = scoreleft * scoreright * scoretop * scorebottom
+
+print(scoretotal)
