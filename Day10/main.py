@@ -28,13 +28,13 @@ for cycle in range(2,241):
 
 print("The answer to Part 1 is", sum(signalstr))
     
-screenprint = []
+prtsc = ""
 for cycle, register in enumerate(registers, 1):
     if register - 1 <= (cycle-1) % 40 <= register + 1:
-        screenprint.append("#")
+        prtsc += "#"
     else:
-        screenprint.append(".")
-    if cycle % 40 == 0: screenprint.append("\n")
+        prtsc += "."
+    if cycle % 40 == 0: prtsc += "\n"
 
 print("The printed screen is:")
-print(''.join(screenprint))
+print(prtsc)
